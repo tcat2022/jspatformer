@@ -28,5 +28,5 @@ box-sizing: border-box;
   font-size: 25px;
   border: 3px dashed orangered;
   color: white;
-  /*display: none;*/
+ display: none;
 }  

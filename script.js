@@ -6,7 +6,7 @@ c.height = 600;
 
 const gravity = 1.5
 let level = 0
-let platfromcount = 6
+let platfromcount = 4
 let min = 50;
 let max = 500
 let isPositive = true;
@@ -58,7 +58,7 @@ isPositive = !isPositive;
       }
 }
 createPlatforms()
-console.log(platforms[5].position.x)
+
 class Player {
     constructor(){
         this.width = 35
@@ -83,7 +83,7 @@ class Player {
         this.position.y += this.velocity.y
         if(this.position.y + this.height + this.velocity.y <= c.height){
     this.velocity.y += gravity
-        }else this.velocity.y = 0 
+        }else this.velocity.y = 0
     
     } 
     }
@@ -108,13 +108,16 @@ platforms.forEach(platform => {
 })
 player.draw()
 
+let onPlatform = false;
+
+
 
 function animate(){
     requestAnimationFrame(animate)
-
+//console.log(onPlatform)
     ctx.clearRect(0,0,c.width,c.height)
     let speed = 2.5 + level;
-    console.log(speed)
+   // console.log(speed)
     platforms.forEach(platform => {
         platform.update()
     })
@@ -150,6 +153,7 @@ if(platform.position.x + platform.width <= c.width - c.width ){
 
 //console.log(speed)
 
+onPlatform = false;
 
    platforms.forEach(platform => {
     if(player.position.y + player.height <= platform.position.y &&
@@ -158,11 +162,20 @@ if(platform.position.x + platform.width <= c.width - c.width ){
 <= platform.position.x + platform.width && player.position.x >= c.width - c.width
 && player.position.x + player.width <= c.width
 ){ 
+    onPlatform = true;
     platform.velocity.x = speed * platform.direction
     player.velocity.x += platform.velocity.x
      player.velocity.y = 0
     }else platform.velocity.x = speed * platform.direction; 
+        
 })
+
+if(player.position.y + player.height <= 450){
+    platforms.forEach(platform => {
+        platform.position.y += 4.5
+        
+    })
+}
 
 }
 
@@ -171,7 +184,7 @@ start.addEventListener('click', ()=>{
     start.style.display = 'none'
     animate()
 })
-//animate()
+animate()
 
 
 addEventListener('keydown', ({keyCode}) => {
@@ -186,7 +199,10 @@ addEventListener('keydown', ({keyCode}) => {
       break;
      //jump
      case 32:
-     player.velocity.y -= 21
+       // if(onPlatform){
+     player.velocity.y -= 20
+        //}
+    
      break;
 }
 })
